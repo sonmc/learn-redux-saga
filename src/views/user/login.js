@@ -1,47 +1,25 @@
-import { call } from "@redux-saga/core/effects";
+
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { ACTION_TYPES } from "../../redux/actions/actionTypes";
-import { ROUTER_NAME } from "../../routers/typeRouter";
 import { useForm } from "react-hook-form";
-
+import { useDispatch, useSelector } from 'react-redux';
 import "./login.css";
+import { ACTION_TYPES } from "../../redux/actions/actionTypes";
 export default function Login(props) {
-  const { userName } = props;
+  const data = useSelector(state => state);
 
   const history = useHistory();
-  const { register, handleSubmit } = useForm();
-
+  const { register, handleSubmit, formState: { errors } } = useForm();
   const [isLogin, setLogin] = useState(false);
   const [statusLogin, setStatusLogin] = useState(false);
-
-  console.log("isLogin ::", isLogin);
-
-  // componentDidmount
-  useEffect(() => {
-    // callApi()
-    setLogin(true);
-    console.log("isLogin hnnhnhnhnnh", isLogin);
-  }, []);
-
-  //componentDidUpdate
-  // useEffect(() => {
-  //   setStatusLogin(true);
-  //   console.log('isLogin Change ::');
-  // }, [isLogin]);
-
+  const dispatch = useDispatch();
   const onLogin = (data) => {
-    // setLogin(false)
-  };
-
+    dispatch({ type: ACTION_TYPES.INIT, data })
+  }
   return (
     <React.Fragment>
       <div className="login-form">
         <form onSubmit={handleSubmit(onLogin)}>
-          <div className="imgcontainer">
-            <img src="img_avatar2.png" alt="Avatar" className="avatar" />
-          </div>
-
           <div className="container">
             <label htmlFor="uname">
               <b>Username</b>
@@ -50,7 +28,7 @@ export default function Login(props) {
               type="text"
               placeholder="Enter Username"
               name="uname"
-              required
+              {...register("username", { required: true })}
             />
 
             <label htmlFor="psw">
@@ -60,7 +38,7 @@ export default function Login(props) {
               type="password"
               placeholder="Enter Password"
               name="psw"
-              required
+              {...register("password", { required: true })}
             />
 
             <button type="submit">Login</button>
