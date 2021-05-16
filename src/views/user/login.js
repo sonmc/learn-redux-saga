@@ -4,18 +4,18 @@ import { useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from 'react-redux';
 import "./login.css";
-import { ACTION_TYPES } from "../../redux/actions/actionTypes";
-export default function Login(props) {
+import { ROUTER_NAME } from "../../routers/typeRouter";
+export default function Login() {
   const data = useSelector(state => state);
 
   const history = useHistory();
   const { register, handleSubmit, formState: { errors } } = useForm();
-  const [isLogin, setLogin] = useState(false);
-  const [statusLogin, setStatusLogin] = useState(false);
-  const dispatch = useDispatch();
+
+
   const onLogin = (data) => {
-    dispatch({ type: ACTION_TYPES.INIT, data })
+    history.push(ROUTER_NAME.USER_LIST);
   }
+
   return (
     <React.Fragment>
       <div className="login-form">
@@ -41,7 +41,7 @@ export default function Login(props) {
               {...register("password", { required: true })}
             />
 
-            <button type="submit">Login</button>
+            <button className="btn-success " type="submit">Login</button>
             <label>
               <input
                 type="checkbox"
